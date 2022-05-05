@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using OpenQA.Selenium;
+using Sia11.Tests.PageObjects.Home;
 
 namespace Sia11.Tests.PageObjects.Login
 {
@@ -18,13 +19,14 @@ namespace Sia11.Tests.PageObjects.Login
         public IWebElement LblValidation => _driver.FindElement(By.XPath("//div[@data-test='notice']"));
 
 
-        public void LoginWith(string email, string pass)
+        public HomePage LoginWith(string email, string pass)
         {
             TxtEmail.SendKeys(email);
             TxtPassword.SendKeys(pass);
 
             BtnLogin.Click();
             Thread.Sleep(2000);
+            return new HomePage(_driver);
         }
 
     }
