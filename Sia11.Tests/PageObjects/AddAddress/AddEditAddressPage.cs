@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using Sia11.Tests.PageObjects.AddAddress.InputData;
+using Sia11.Tests.PageObjects.AddressDetails;
 
 namespace Sia11.Tests.PageObjects.AddAddress
 {
-    public class AddAddressPage
+    public class AddEditAddressPage
     {
         private IWebDriver _driver;
 
-        public AddAddressPage(IWebDriver driver)
+        public AddEditAddressPage(IWebDriver driver)
         {
             _driver = driver;
         }
@@ -36,19 +38,20 @@ namespace Sia11.Tests.PageObjects.AddAddress
         private IWebElement TxtZipCode =>
             _driver.FindElement(By.Id("address_zip_code"));
 
-        public void AddAddress(string firstName, string lastName, string address1, string state, string country, string city, string zipcode)
+        public AddressDetailsPage AddEditAddress(AddEditAddressBo inputData)
         {
-            TxtFirstName.SendKeys(firstName);
-            TxtLastName.SendKeys(lastName);
-            TxtAddress1.SendKeys(address1);
+            TxtFirstName.SendKeys(inputData.FirstName);
+            TxtLastName.SendKeys(inputData.LastName);
+            TxtAddress1.SendKeys(inputData.Address1);
 
             var stateName = new SelectElement(DdlState);
-            stateName.SelectByText(state);
+            stateName.SelectByText(inputData.State);
 
-            LstCountry.FirstOrDefault(el => el.Text.Contains(country)).Click();
+            LstCountry.FirstOrDefault(el => el.Text.Contains(inputData.Country)).Click();
 
-            TxtCity.SendKeys(city);
-            TxtZipCode.SendKeys(zipcode);
+            TxtCity.SendKeys(inputData.City);
+            TxtZipCode.SendKeys(inputData.ZipCode);
+            return new AddressDetailsPage(_driver);
         }
     }
 }

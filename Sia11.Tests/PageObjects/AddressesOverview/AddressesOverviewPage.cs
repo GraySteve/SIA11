@@ -1,4 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using OpenQA.Selenium;
 using Sia11.Tests.PageObjects.AddAddress;
 
 namespace Sia11.Tests.PageObjects.AddressesOverview
@@ -12,14 +15,30 @@ namespace Sia11.Tests.PageObjects.AddressesOverview
             _driver = browser;
         }
 
+        private IList<IWebElement> LstAddresses =>
+            _driver.FindElements(By.CssSelector("tbody tr"));
+
+        private IWebElement BtnEdit(string addressName) =>
+            LstAddresses.FirstOrDefault(element => element.Text.Contains(addressName))
+                .FindElement(By.CssSelector("a[data-test*=edit]"));
+
+        private IWebElement BtnDelete(string addressName) =>
+            LstAddresses.FirstOrDefault(element => element.Text.Contains(addressName))
+                .FindElement(By.CssSelector("a[data-test*=destroy]"));
+
         private IWebElement BtnNewAddress => 
             _driver.FindElement(By.CssSelector("a[data-test=create]"));
 
+        public AddEditAddressPage NavigateToEditAddressPage(string addressName)
+        {
+            BtnEdit(addressName).Click();
+            return new AddEditAddressPage(_driver);
+        }
 
-        public AddAddressPage NavigateToAddAddressPage()
+        public AddEditAddressPage NavigateToAddAddressPage()
         {
             BtnNewAddress.Click();
-            return new AddAddressPage(_driver);
+            return new AddEditAddressPage(_driver);
         }
     }
 }
