@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Sia11.Tests.PageObjects.AddAddress.InputData;
@@ -38,6 +39,10 @@ namespace Sia11.Tests.PageObjects.AddAddress
         private IWebElement TxtZipCode =>
             _driver.FindElement(By.Id("address_zip_code"));
 
+        private IWebElement BtnSubmit =>
+            _driver.FindElement
+                (By.CssSelector("input[type=submit]"));
+
         public AddressDetailsPage AddEditAddress(AddEditAddressBo inputData)
         {
             TxtFirstName.SendKeys(inputData.FirstName);
@@ -51,6 +56,8 @@ namespace Sia11.Tests.PageObjects.AddAddress
 
             TxtCity.SendKeys(inputData.City);
             TxtZipCode.SendKeys(inputData.ZipCode);
+            BtnSubmit.Click();
+            Thread.Sleep(2000);
             return new AddressDetailsPage(_driver);
         }
     }

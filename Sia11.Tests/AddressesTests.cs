@@ -58,9 +58,9 @@ namespace Sia11.Tests
                 FirstName = "Pretty please don't edit/delete",
                 LastName = "SIA 11 last name",
                 Address1 = "SIA 11 address1",
-                City = "California",
+                City = "Iasi",
                 Country = "Canada",
-                State = "Iasi",
+                State = "Florida",
                 ZipCode = "1231"
             };
             _addAddressPage = 

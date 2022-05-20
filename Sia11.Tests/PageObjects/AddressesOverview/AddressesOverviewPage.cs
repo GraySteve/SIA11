@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using OpenQA.Selenium;
 using Sia11.Tests.PageObjects.AddAddress;
 
@@ -31,6 +32,7 @@ namespace Sia11.Tests.PageObjects.AddressesOverview
 
         public AddEditAddressPage NavigateToEditAddressPage(string addressName)
         {
+            Thread.Sleep(2000);
             BtnEdit(addressName).Click();
             return new AddEditAddressPage(_driver);
         }
