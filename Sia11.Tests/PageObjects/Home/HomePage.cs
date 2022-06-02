@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using Sia11.Tests.PageObjects.AddressesOverview;
+using Sia11.Tests.PageObjects.Shared.MenuController;
 
 namespace Sia11.Tests.PageObjects.Home
 {
@@ -12,13 +13,8 @@ namespace Sia11.Tests.PageObjects.Home
             _driver = browserDriver;
         }
 
-        private IWebElement BtnAddresses => _driver.FindElement(By.CssSelector("a[data-test='addresses']"));
+        private LoggedInMenuController Menu => new LoggedInMenuController(_driver);
 
-        public AddressesOverviewPage NavigateToAddressesOverview()
-        {
-            BtnAddresses.Click();
-
-            return new AddressesOverviewPage(_driver);
-        }
+        public AddressesOverviewPage NavigateToAddressesOverviewPage() => Menu.NavigateToAddressesOverview();
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using OpenQA.Selenium;
 using Sia11.Tests.PageObjects.AddAddress;
+using Sia11.Tests.Utils;
 
 namespace Sia11.Tests.PageObjects.AddressesOverview
 {
@@ -27,13 +28,15 @@ namespace Sia11.Tests.PageObjects.AddressesOverview
             LstAddresses.FirstOrDefault(element => element.Text.Contains(addressName))
                 .FindElement(By.CssSelector("a[data-test*=destroy]"));
 
+        private By NewAddress => By.CssSelector("a[data-test=create]");
         private IWebElement BtnNewAddress => 
-            _driver.FindElement(By.CssSelector("a[data-test=create]"));
+            _driver.FindElement(NewAddress);
 
         public AddEditAddressPage NavigateToEditAddressPage(string addressName)
         {
-            Thread.Sleep(2000);
+            _driver.WaitForElement(NewAddress);
             BtnEdit(addressName).Click();
+            
             return new AddEditAddressPage(_driver);
         }
 

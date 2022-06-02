@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Sia11.Tests.PageObjects.Login;
+using Sia11.Tests.PageObjects.Shared.MenuController;
 
 namespace Sia11.Tests
 {
@@ -21,9 +22,10 @@ namespace Sia11.Tests
             //navigate to URL
             _driver.Navigate().GoToUrl("http://a.testaddressbook.com/");
             //Click on signIn
-            _driver.FindElement(by: By.XPath("/html/body/nav/div/div[1]/a[2]")).Click();
-            Thread.Sleep(2000);
-            _loginPage = new LoginPage(_driver);
+            //_driver.FindElement(by: By.XPath("/html/body/nav/div/div[1]/a[2]")).Click();
+            var menu = new LoggedOutMenuController(_driver);
+
+            _loginPage = menu.NavigateToLoginPage();
         }
 
         [TestMethod]
@@ -32,7 +34,8 @@ namespace Sia11.Tests
         {
             _loginPage.LoginWith("test@test.test", "test");
             //Assert
-            Assert.AreEqual("test@test.test", _driver.FindElement(By.XPath("//span[@data-test='current-user']")).Text);
+            var menu = new LoggedInMenuController(_driver);
+            Assert.AreEqual("test@test.test", menu.CurrentUser);
         }
 
         [TestMethod]

@@ -6,6 +6,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Sia11.Tests.PageObjects.AddAddress.InputData;
 using Sia11.Tests.PageObjects.AddressDetails;
+using Sia11.Tests.Utils;
 
 namespace Sia11.Tests.PageObjects.AddAddress
 {
@@ -18,8 +19,9 @@ namespace Sia11.Tests.PageObjects.AddAddress
             _driver = driver;
         }
 
+        private By FirstName => By.Id("address_first_name");
         private IWebElement TxtFirstName =>
-            _driver.FindElement(By.Id("address_first_name"));
+            _driver.FindElement(FirstName);
 
         private IWebElement TxtLastName =>
             _driver.FindElement(By.Id("address_last_name"));
@@ -45,6 +47,8 @@ namespace Sia11.Tests.PageObjects.AddAddress
 
         public AddressDetailsPage AddEditAddress(AddEditAddressBo inputData)
         {
+            _driver.WaitForElement(FirstName);
+            TxtFirstName.Clear();
             TxtFirstName.SendKeys(inputData.FirstName);
             TxtLastName.SendKeys(inputData.LastName);
             TxtAddress1.SendKeys(inputData.Address1);
@@ -57,7 +61,7 @@ namespace Sia11.Tests.PageObjects.AddAddress
             TxtCity.SendKeys(inputData.City);
             TxtZipCode.SendKeys(inputData.ZipCode);
             BtnSubmit.Click();
-            Thread.Sleep(2000);
+            
             return new AddressDetailsPage(_driver);
         }
     }

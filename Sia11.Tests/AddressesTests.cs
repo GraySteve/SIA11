@@ -6,6 +6,7 @@ using Sia11.Tests.PageObjects.AddAddress;
 using Sia11.Tests.PageObjects.AddAddress.InputData;
 using Sia11.Tests.PageObjects.AddressesOverview;
 using Sia11.Tests.PageObjects.Login;
+using Sia11.Tests.PageObjects.Shared.MenuController;
 
 namespace Sia11.Tests
 {
@@ -14,7 +15,7 @@ namespace Sia11.Tests
     {
         private IWebDriver _driver;
         private AddEditAddressPage _addAddressPage;
-        private AddressesOverviewPage _addresOverviewPage;
+        private AddressesOverviewPage _addressOverviewPage;
 
         [TestInitialize]
         public void TestSetup()
@@ -25,11 +26,13 @@ namespace Sia11.Tests
             //navigate to URL
             _driver.Navigate().GoToUrl("http://a.testaddressbook.com/");
             //Click on signIn
-            _driver.FindElement(by: By.XPath("/html/body/nav/div/div[1]/a[2]")).Click();
-            Thread.Sleep(2000);
-            var _loginPage = new LoginPage(_driver);
+            //_driver.FindElement(by: By.XPath("/html/body/nav/div/div[1]/a[2]")).Click();
+            var loggedOutMenu = new LoggedOutMenuController(_driver);
+           
+            var _loginPage = loggedOutMenu.NavigateToLoginPage();
+
             var _homePage = _loginPage.LoginWith("test@test.test", "test");
-            _addresOverviewPage = _homePage.NavigateToAddressesOverview();
+            _addressOverviewPage = _homePage.NavigateToAddressesOverviewPage();
         }
 
         [TestMethod]
@@ -45,7 +48,7 @@ namespace Sia11.Tests
                 State = "Iasi",
                 ZipCode = "1231"
             };
-            _addAddressPage = _addresOverviewPage.NavigateToAddAddressPage();
+            _addAddressPage = _addressOverviewPage.NavigateToAddAddressPage();
             var _addressDetails = _addAddressPage.AddEditAddress(inputData);
             Assert.AreEqual("Address was successfully created.", _addressDetails.NoticeText);
         }
@@ -64,7 +67,7 @@ namespace Sia11.Tests
                 ZipCode = "1231"
             };
             _addAddressPage = 
-                _addresOverviewPage.
+                _addressOverviewPage.
                     NavigateToEditAddressPage(inputData.FirstName);
             var _addressDetails = _addAddressPage.AddEditAddress(inputData);
             Assert.AreEqual("Address was successfully updated.", _addressDetails.NoticeText);
